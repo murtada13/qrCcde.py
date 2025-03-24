@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="ar">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Home</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            direction: rtl;
+            background-color: #f4f4f4;
+            margin: 0;
+            padding: 0;
+        }
+        .container {
+            margin-top: 50px;
+        }
+        .email-box {
+            background-color: #fff;
+            padding: 15px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            display: inline-block;
+        }
+        .buttons {
+            margin-top: 20px;
+        }
+        button {
+            display: block;
+            width: 220px;
+            margin: 10px auto;
+            padding: 12px;
+            font-size: 16px;
+            cursor: pointer;
+            border: none;
+            border-radius: 5px;
+            background-color: #007BFF;
+            color: white;
+            transition: 0.3s;
+        }
+        button:hover {
+            background-color: #0056b3;
+        }
+        .logout-btn {
+            background-color: #DC3545;
+        }
+        .logout-btn:hover {
+            background-color: #b02a37;
+        }
+        /* إضافات لعرض رمز QR */
+        #qrcode {
+            margin-top: 30px;
+            display: none; /* إخفاء رمز الـ QR في البداية */
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="email-box">
+            <p><strong id="emailText">{{ email }}</strong></p>
+        </div>
+        <div class="buttons">
+            <!-- الرابط الصحيح لصفحة تعديل الملف الشخصي -->
+            <a href="{{ url_for('profile') }}">
+                <button>تعديل الملف الشخصي</button>
+            </a>
+            <button onclick="showQRCode()">عرض رمز QR</button>
+            <a href="{{ url_for('logout') }}">
+                <button class="logout-btn">تسجيل الخروج</button>
+            </a>
+        </div>
+
+        <!-- عنصر لعرض رمز QR -->
+        {% if qr_code %}
+        <div id="qrcode">
+            <img src="data:image/png;base64,{{ qr_code }}" alt="QR Code">
+            <p>تم عرض رمز الـ QR بنجاح!</p>
+        </div>
+        {% else %}
+        <p>لا يوجد باركود لعرضه</p>
+        {% endif %}
+    </div>
+
+    <script>
+        function showQRCode() {
+            var qrCodeDiv = document.getElementById("qrcode");
+            // إذا كان رمز الـ QR مخفي، يتم إظهاره
+            if (qrCodeDiv.style.display === "none") {
+                qrCodeDiv.style.display = "block";
+            } else {
+                qrCodeDiv.style.display = "none"; // إخفاء رمز الـ QR إذا كان مرئياً
+            }
+        }
+    </script>
+</body>
+</html>

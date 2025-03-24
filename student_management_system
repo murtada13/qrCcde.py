@@ -1,0 +1,8 @@
+student_management_system/
+│
+├── app.py              # ملف البايثون
+├── templates/          # مجلد يحتوي على ملفات HTML
+│   ├── index.html      # صفحة البداية
+│   └── to.html  # صفحة إضافة الطالب
+└── static/             # مجلد يحتوي على ملفات ثابتة مثل CSS و JavaScript
+    └── styles.css      # ملف التنسيق (اختياري)

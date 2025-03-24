@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="ar">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>إنشاء حساب</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 20px;
+            background-color: #f4f4f9;
+        }
+        .form-container {
+            width: 300px;
+            margin: auto;
+            padding: 20px;
+            background-color: white;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+        .form-container input {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 15px;
+            border-radius: 5px;
+            border: 1px solid #ddd;
+        }
+        .form-container button {
+            width: 100%;
+            padding: 10px;
+            background-color: #007bff;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        .form-container button:hover {
+            background-color: #0056b3;
+        }
+    </style>
+</head>
+<body>
+    <div class="form-container">
+        <h2>إنشاء حساب جديد</h2>
+        <form method="POST"> 
+            <input type="name" name="name" placeholder="الاسم" required>
+            <input type="stage" name="stage" placeholder="القسم" required>
+            <input type="email" name="email" placeholder="البريد الإلكتروني" required>
+            <input type="password" name="password" placeholder="العنون" required>
+            <input type="password" name="password" placeholder="كلمة المرور" required>
+            <input type="phone" name="phone" placeholder="رقم التلفون" required>
+            <input type="password" name="confirm_password" placeholder="تأكيد كلمة المرور" required>
+            <button type="submit">إنشاء الحساب</button>
+        </form>
+    </div>
+</body>
+</html>

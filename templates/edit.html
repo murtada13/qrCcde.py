@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="ar">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>الصفحة الرئيسية</title>
+</head>
+<body>
+    <h1>مرحبًا، {{ email }}</h1>
+    <p>اسم الطالب: {{ name }}</p>
+    <p>القسم: {{ department }}</p>
+    <p>الباركود: {{ barcode }}</p>
+    
+    <!-- عرض QR code إذا تم إنشاؤه بنجاح -->
+    {% if qr_filename %}
+    <img src="{{ url_for('static', filename=qr_filename) }}" alt="QR Code">
+    {% else %}
+    <p>لم يتم العثور على QR Code.</p>
+    {% endif %}
+    
+    <a href="{{ url_for('logout') }}">تسجيل الخروج</a>
+</body>
+</html>
+ 

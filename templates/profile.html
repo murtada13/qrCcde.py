@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="ar">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>الملف الشخصي</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: right;
+            direction: rtl;
+            background-color: #f4f4f4;
+            margin: 0;
+            padding: 0;
+        }
+        .container {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin: 50px;
+            padding: 20px;
+        }
+        .profile-box {
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            width: 60%;
+        }
+        .profile-box p {
+            font-size: 18px;
+            margin: 10px 0;
+        }
+        .profile-box h1 {
+            font-size: 24px;
+            margin-bottom: 20px;
+        }
+        .profile-box img {
+            border-radius: 50%;
+            width: 120px;
+            height: 120px;
+            object-fit: cover;
+            margin-bottom: 20px;
+        }
+        .qr-code-container {
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(162, 11, 11, 0.767);
+            width: 20%;
+            text-align: center;
+        }
+        .qr-code-container img {
+            width: 200px;
+            height: 200px;
+        }
+        .update-btn, .logout-btn {
+            display: inline-block;
+            margin-top: 20px;
+            padding: 10px 20px;
+            background-color: #4CAF50;
+            color: #fff;
+            text-decoration: none;
+            border-radius: 5px;
+            text-align: center;
+        }
+        .update-btn:hover, .logout-btn:hover {
+            background-color: #45a049;
+        }
+        .logout-btn {
+            background-color: #f44336; /* لون أحمر لتسجيل الخروج */
+            margin-top: 10px;
+        }
+        .logout-btn:hover {
+            background-color: #e53935;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- معلومات الطالب -->
+        <div class="profile-box">
+            <h1>الملف الشخصي</h1>
+            <!-- صورة شخصية (يمكنك إضافة صورة حقيقية هنا) -->
+            <img src="https://via.placeholder.com/120" alt="صورة المستخدم">
+            <p><strong>البريد الإلكتروني:</strong> {{ email }}</p>
+            <p><strong>الاسم:</strong> {{ name }}</p>
+            <p><strong>القسم:</strong> {{ department }}</p>
+            <p><strong>الهاتف:</strong> {{ phone }}</p>
+            <p><strong>العنوان:</strong> {{ address }}</p>
+            <a href="/update_profile" class="update-btn">تحديث البيانات</a>
+        </div>
+
+        <!-- رمز QR -->
+        <div class="qr-code-container">
+            {% if qr_code %}
+                <img src="data:image/png;base64,{{ qr_code }}" alt="QR Code">
+            {% else %}
+                <p>لا يوجد رمز QR</p>
+            {% endif %}
+        </div>
+    </div>
+
+    <!-- زر تسجيل الخروج -->
+    <div style="text-align: center; margin-top: 20px;">
+        <a href="/logout" class="logout-btn">تسجيل الخروج</a>
+    </div>
+</body>
+</html>
