@@ -52,6 +52,13 @@
         #qrcode {
             margin-top: 30px;
             display: none; /* إخفاء رمز الـ QR في البداية */
+            opacity: 0;
+            transform: scale(0.5);
+            transition: opacity 0.5s ease, transform 0.5s ease;
+        }
+        #qrcode img {
+            width: 120px; /* تصغير حجم رمز QR */
+            height: 120px;
         }
     </style>
 </head>
@@ -61,7 +68,6 @@
             <p><strong id="emailText">{{ email }}</strong></p>
         </div>
         <div class="buttons">
-            <!-- الرابط الصحيح لصفحة تعديل الملف الشخصي -->
             <a href="{{ url_for('profile') }}">
                 <button>تعديل الملف الشخصي</button>
             </a>
@@ -72,24 +78,30 @@
         </div>
 
         <!-- عنصر لعرض رمز QR -->
-        {% if qr_code %}
         <div id="qrcode">
-            <img src="data:image/png;base64,{{ qr_code }}" alt="QR Code">
-            <p>تم عرض رمز الـ QR بنجاح!</p>
+            {% if qr_code %}
+                <img src="data:image/png;base64,{{ qr_code }}" alt="QR Code" />
+            {% else %}
+                <p>لا يوجد باركود لعرضه.</p>
+            {% endif %}
         </div>
-        {% else %}
-        <p>لا يوجد باركود لعرضه</p>
-        {% endif %}
     </div>
 
     <script>
         function showQRCode() {
             var qrCodeDiv = document.getElementById("qrcode");
-            // إذا كان رمز الـ QR مخفي، يتم إظهاره
-            if (qrCodeDiv.style.display === "none") {
+            if (qrCodeDiv.style.display === "none" || qrCodeDiv.style.display === "") {
                 qrCodeDiv.style.display = "block";
+                setTimeout(() => {
+                    qrCodeDiv.style.opacity = "1";
+                    qrCodeDiv.style.transform = "scale(1)";
+                }, 10);
             } else {
-                qrCodeDiv.style.display = "none"; // إخفاء رمز الـ QR إذا كان مرئياً
+                qrCodeDiv.style.opacity = "0";
+                qrCodeDiv.style.transform = "scale(0.5)";
+                setTimeout(() => {
+                    qrCodeDiv.style.display = "none";
+                }, 500);
             }
         }
     </script>

@@ -29,7 +29,7 @@
         }
         .profile-box p {
             font-size: 18px;
-            margin: 10px 0;
+            margin: 10px auto;
         }
         .profile-box h1 {
             font-size: 24px;
@@ -46,8 +46,8 @@
             background-color: #fff;
             padding: 20px;
             border-radius: 10px;
-            box-shadow: 0 0 10px rgba(162, 11, 11, 0.767);
-            width: 20%;
+            box-shadow: 0 0 10px rgba(68, 23, 23, 0.767);
+            width: 25%;
             text-align: center;
         }
         .qr-code-container img {
@@ -68,7 +68,7 @@
             background-color: #45a049;
         }
         .logout-btn {
-            background-color: #f44336; /* لون أحمر لتسجيل الخروج */
+            background-color: #f44336;
             margin-top: 10px;
         }
         .logout-btn:hover {
@@ -81,17 +81,18 @@
         <!-- معلومات الطالب -->
         <div class="profile-box">
             <h1>الملف الشخصي</h1>
-            <!-- صورة شخصية (يمكنك إضافة صورة حقيقية هنا) -->
-            <img src="https://via.placeholder.com/120" alt="صورة المستخدم">
+            <!-- صورة شخصية (تُعرض إذا كانت موجودة) -->
+            <img src="{{ user_image }}" alt="صورة المستخدم" onerror="this.src='https://via.placeholder.com/120';">
             <p><strong>البريد الإلكتروني:</strong> {{ email }}</p>
             <p><strong>الاسم:</strong> {{ name }}</p>
             <p><strong>القسم:</strong> {{ department }}</p>
-            <p><strong>الهاتف:</strong> {{ phone }}</p>
-            <p><strong>العنوان:</strong> {{ address }}</p>
+            <p><strong>القسم:</strong> {{ college }}</p>
+            <p><strong>الهاتف:</strong> {{ phone if phone else 'غير متاح' }}</p>
+            <p><strong>العنوان:</strong> {{ address if address else 'غير متاح' }}</p>
             <a href="/update_profile" class="update-btn">تحديث البيانات</a>
         </div>
 
-        <!-- رمز QR -->
+        <!-- عرض رمز QR -->
         <div class="qr-code-container">
             {% if qr_code %}
                 <img src="data:image/png;base64,{{ qr_code }}" alt="QR Code">

@@ -3,8 +3,10 @@ from flask import Flask, render_template, request, redirect, url_for, flash, ses
 import qrcode
 from io import BytesIO
 import base64
+import webbrowser
+import threading
 
-app = Flask(__name__)
+app = Flask(__name__)  # تصحيح هنا
 app.secret_key = 'your_secret_key'  # مفتاح سري لحماية الجلسات
 
 # الاتصال بقاعدة البيانات
@@ -19,7 +21,7 @@ def get_db_connection():
 # الصفحة الافتراضية توجّه المستخدم إلى صفحة تسجيل الدخول
 @app.route('/')
 def home():
-    return redirect(url_for('login'))
+    return redirect(url_for('1'))
 
 # صفحة تسجيل الدخول
 @app.route('/login', methods=['GET', 'POST'])
@@ -34,12 +36,12 @@ def login():
 
         conn = get_db_connection()
         cursor = conn.cursor()
-        cursor.execute('SELECT id, email, password FROM users WHERE email = %s', (email,))
+        cursor.execute('SELECT id_u, email, password FROM users WHERE email = %s', (email,))
         user = cursor.fetchone()
 
         if user and user[2] == password:
             session['logged_in'] = True
-            session['user_id'] = user[0]
+            session['id_u'] = user[0]  # تخزين id_u في الجلسة
             session['email'] = user[1]
 
             flash('تم تسجيل الدخول بنجاح', 'success')
@@ -57,9 +59,10 @@ def index():
         return redirect(url_for('login'))
 
     email = session.get('email')
+    user_id = session.get('id_u')  # استخدام id_u من الجلسة
     conn = get_db_connection()
     cursor = conn.cursor()
-    cursor.execute('SELECT name, deap, barcode FROM student WHERE id = %s', (session['user_id'],))
+    cursor.execute('SELECT name_student, deap, barcode FROM student WHERE id_s = %s', (user_id,))  # جلب بيانات الطالب باستخدام id_u
     student_data = cursor.fetchone()
     cursor.close()
     conn.close()
@@ -71,7 +74,8 @@ def index():
 
     qr_base64 = None
     if barcode != "لا توجد بيانات متاحة":
-        qr = qrcode.make(barcode)
+        barcode_with_link = f"https://2ly.link/216Zh?code={barcode}"  # الرابط المعدل
+        qr = qrcode.make(barcode_with_link)
         buffer = BytesIO()
         qr.save(buffer, format="PNG")
         buffer.seek(0)
@@ -83,35 +87,37 @@ def index():
 @app.route('/profile')
 def profile():
     if 'logged_in' not in session:
-        return redirect(url_for('login'))
+        return redirect(url_for('profile'
+        ''))
 
     email = session.get('email')
-    user_id = session.get('user_id')
+    user_id = session.get('id_u')  # استخدام id_u من الجلسة
     conn = get_db_connection()
     cursor = conn.cursor()
     
-    # جلب بيانات الطالب مع رقم الهاتف والعنوان من جدول student
-    cursor.execute('SELECT name, deap, barcode, phone, address FROM student WHERE id = %s', (user_id,))
+    # جلب بيانات الطالب مع رقم الهاتف والعنوان من جدول student باستخدام id_u
+    cursor.execute('SELECT name_student, deap, barcode, phone, address, collage FROM student WHERE id_s = %s', (user_id,))
     student_data = cursor.fetchone()
     
     cursor.close()
     conn.close()
 
     if student_data:
-        name, department, barcode, phone, address = student_data  # تم إضافة العنوان
+        name, department, barcode, phone, address, collage = student_data  # تم إضافة العنوان
     else:
-        name = department = barcode = phone = address = "غير متاح"
+        name = department = barcode = phone = address = collage = "غير متاح"
 
     qr_base64 = None
     if barcode != "غير متاح":
-        qr = qrcode.make(barcode)
+        barcode_with_link = f"https://2ly.link/216Zh?code={barcode}"  # الرابط المعدل
+        qr = qrcode.make(barcode_with_link)
         buffer = BytesIO()
         qr.save(buffer, format="PNG")
         buffer.seek(0)
         qr_base64 = base64.b64encode(buffer.read()).decode('utf-8')
 
     # إرسال البيانات إلى القالب
-    return render_template('profile.html', email=email, name=name, department=department, barcode=barcode, phone=phone, address=address, qr_code=qr_base64)
+    return render_template('profile.html', email=email, name=name, department=department, barcode=barcode, phone=phone, address=address, qr_code=qr_base64, collage=collage)
 
 # تسجيل الخروج
 @app.route('/logout')
@@ -120,5 +126,10 @@ def logout():
     flash('تم تسجيل الخروج بنجاح', 'info')
     return redirect(url_for('login'))
 
-if __name__ == '__main__':
-    app.run(debug=True)
+# فتح المتصفح تلقائيًا
+def open_browser():
+    webbrowser.open("http://127.0.0.1:5000/")
+
+if __name__ == '__main__':  # تصحيح هنا
+    threading.Timer(1, open_browser).start()
+    app.run(debug=True, use_reloader=False)

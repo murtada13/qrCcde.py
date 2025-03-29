@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="ar">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>الصفحة الرئيسية</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 20px;
+            background-color: #f4f4f9;
+            text-align: center;
+        }
+        .button-container {
+            margin-top: 50px;
+        }
+        .button-container a {
+            padding: 15px 30px;
+            font-size: 18px;
+            margin: 10px;
+            text-decoration: none;
+            background-color: #007bff;
+            color: white;
+            border-radius: 5px;
+            display: inline-block;
+        }
+        .button-container a:hover {
+            background-color: #0056b3;
+        }
+    </style>
+</head>
+<body>
+
+    <h1>مرحبًا بك في موقعنا</h1>
+    <div class="button-container">
+        <a href="{{ url_for('login') }}">تسجيل الدخول</a>
+        <a href="{{ url_for('signup') }}">إنشاء حساب</a>
+    </div>
+
+</body>
+</html>
